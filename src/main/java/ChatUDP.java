@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
+import java.net.*;
+import java.util.regex.*;
 
 public class ChatUDP extends JFrame {
     private JTextArea textAreaMain;
@@ -15,24 +12,48 @@ public class ChatUDP extends JFrame {
     private final int FRAME_WIDTH = 400;
     private final int FRAME_HEIGHT = 400;
     private final int PORT = 9999;
-    private final String IP_BROADCAST = "10.0.1.255";
+    private final String IP_BROADCAST = "192.168.0.255";
 
     private class Receiver extends Thread {
         @Override
         public void start() {
             super.start();
-            System.out.println("hello");
+            try {
+                customize();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void customize() throws Exception {
+        DatagramSocket receiveSocket = new DatagramSocket(PORT);
+        Pattern regex = Pattern.compile("[\u0020-\uFFFF]");
+        while(true){
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
+            receiveSocket.receive(receivePacket);
+            InetAddress IPAddress = receivePacket.getAddress();
+            int port = receivePacket.getPort();
+            String sentence = new String(receivePacket.getData());
+            Matcher m = regex.matcher(sentence);
+            textAreaMain.append(IPAddress.toString()+":"+port+" - ");
+            while(m.find()){
+                textAreaMain.append(sentence.substring(m.start(),m.end()));
+            }
+            textAreaMain.append("\r\n");
+            textAreaMain.setCaretPosition(textAreaMain.getText().length());
         }
     }
 
     private void btnSendHandler() throws Exception {
-        DatagramSocket  sendSocket = new DatagramSocket();
+        DatagramSocket sendSocket = new DatagramSocket();
         InetAddress IPAdress = InetAddress.getByName(IP_BROADCAST);
         byte[] sendData;
         String sentence = textFieldMessage.getText();
         textFieldMessage.setText("");
-        sendData = sentence.getBytes(StandardCharsets.UTF_8);
-        DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length, IPAdress, PORT);
+        sendData = sentence.getBytes("UTF-8");
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAdress, PORT);
         sendSocket.send(sendPacket);
 
     }
