@@ -28,9 +28,12 @@
 
 ## Demonstration 🎥
 
-<video width="320" height="240" controls>
-  <source src="src/main/resources/IMG_9420.mp4" type="video/mp4">
-</video>
+<picture>
+      <img src="src/main/resources/img.png" height="350">
+    </picture>
+<div></div>
+
+
 
 ## Description 📝
 
