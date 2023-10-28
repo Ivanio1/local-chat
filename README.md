@@ -28,22 +28,16 @@
 
 ## Demonstration 🎥
 
-| embedded gif or mp4 |
-|-------------------------------------------------------------------------------------------------------------------------------------------|
-
-<a id="descr"></a>
+<video width="320" height="240" controls>
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+</video>
 
 ## Description 📝
 
 > 👋 **Welcome to this project!**
 >
 > 🛠 **What is it?**  
-> `tell me what is it`
->
-> 🎯 **Purpose of the Website**  
-> `why you need it` 😎
->
-> ---
->
+> Simple multithreaded chat for local communication
 
-...
