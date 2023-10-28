@@ -18,6 +18,6 @@
             <artifactId>javafx-swing</artifactId>
             <version>21</version>
         </dependency>
-
     </dependencies>
+
 </project>
